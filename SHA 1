@@ -51,10 +51,9 @@ Example console output:  5DF6E0E2761358C1F6F48E54CE6C3D6D12B06E46
 - **Output hash size:** 160 bits (5 × 32-bit words)  
 - **Achieved frequency:** ~XXX MHz (from Vivado synthesis)  
 - **Utilization:**  
-  - LUTs: XXXX  
-  - FFs: XXXX  
-  - BRAM: 0  
-  - DSP: 0  
+  - LUTs: 519 
+  - FFs: 168 
+  - Registers: 328 
 
 ---
 
