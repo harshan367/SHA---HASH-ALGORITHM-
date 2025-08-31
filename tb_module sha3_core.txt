@@ -1,0 +1,76 @@
+`timescale 1ns/1ps
+
+module tb_sha3_core;
+
+    reg         clk;
+    reg         rst;
+    reg         start;
+    reg [511:0] data;
+    reg [159:0] vin;
+    wire [159:0] vout;
+    wire        done;
+
+    integer file, i;
+    reg [7:0] file_data [0:63]; // 512-bit input (64 bytes)
+
+    // Instantiate the SHA-3 core module
+    sha3_core uut (
+        .i_clk(clk),
+        .i_rst(rst),
+        .i_start(start),
+        .i_data(data),
+        .i_vin(vin),
+        .o_vout(vout),
+        .o_done(done)
+    );
+
+    // Clock generation
+    always #5 clk = ~clk;  // 10 ns clock period
+
+    initial begin
+        // Initialize signals
+        clk = 0;
+        rst = 1;
+        start = 0;
+        data = 0;
+        vin = 160'h67452301EFCDAB8998BADCFE10325476C3D2E1F0; // SHA-3 Initial Values
+
+        // Wait for a few clock cycles
+        #20 rst = 0;
+
+        // Open the hex file for reading
+        file = $fopen("mic_output_image.hex", "r");
+        if (file == 0) begin
+            $display("Error: Could not open image.hex");
+            $finish;
+        end
+
+        // Read 64 bytes (512 bits) from the hex file
+        for (i = 0; i < 64; i = i + 1) begin
+            if (!$feof(file)) begin
+                $fscanf(file, "%2x", file_data[i]); // Read hex byte
+            end else begin
+                file_data[i] = 8'h00; // Padding if file is smaller
+            end
+        end
+        $fclose(file);
+
+        // Convert file_data array into a 512-bit input
+        for (i = 0; i < 64; i = i + 1) begin
+            data = (data << 8) | file_data[i];
+        end
+
+        // Start SHA-3 processing
+        #10 start = 1;
+        #10 start = 0;
+
+        // Wait for processing to complete
+        wait (done);
+
+        // Display output hash value
+        $display("SHA-3 Hash Output: %h", vout);
+        
+        $finish;
+    end
+
+endmodule
