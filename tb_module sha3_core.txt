@@ -39,7 +39,7 @@ module tb_sha3_core;
         #20 rst = 0;
 
         // Open the hex file for reading
-        file = $fopen("mic_output_image.hex", "r");
+        file = $fopen("sha_image.hex", "r");
         if (file == 0) begin
             $display("Error: Could not open image.hex");
             $finish;
@@ -72,5 +72,6 @@ module tb_sha3_core;
         
         $finish;
     end
+
 
 endmodule
