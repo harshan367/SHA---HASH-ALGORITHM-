@@ -1,0 +1,93 @@
+# SHA-1 Cryptographic Hash – Verilog Implementation  
+
+## 📌 Overview  
+This project implements the **SHA-1 hash algorithm** in **Verilog HDL**.  
+It processes a **512-bit message block** and produces a **160-bit hash digest**.  
+
+The design is written in **Behavioral style** and follows the SHA-1 standard with **80 rounds**.  
+A Verilog **testbench** is included, which loads a 512-bit message block from a hex file and verifies the hash computation.  
+
+---
+
+## 🛠️ Tools Used  
+- **Xilinx Vivado 20218.2** – RTL simulation & synthesis  
+- **Verilog HDL** – hardware design  
+– waveform viewing  
+
+---
+
+## 📂 Project Structure  
+sha1-verilog/
+│── rtl/
+│ ├── sha1_core.v # SHA-1 core (80-round implementation)
+│── tb/
+│ ├── tb_sha1_core.v # Testbench
+│── image.hex # Example input file (512 bits)
+│── images/ # Simulation waveforms & synthesis screenshots
+│── README.md
+│── LICENSE
+
+
+---
+
+## 🚀 How to Run  
+
+### Simulation  
+1. Open **Vivado** → create a new project.  
+2. Add `rtl/sha1_core.v` and `tb/tb_sha1_core.v`.  
+3. Provide your input data in `mic_output_image.hex` (64 bytes = 512 bits).  
+4. Run **Behavioral Simulation**.  
+5. Check the output digest in the console or waveform.  
+
+Example console output:  5DF6E0E2761358C1F6F48E54CE6C3D6D12B06E46
+
+
+---
+
+## 📊 Results  
+
+- **Rounds implemented:** 80 (SHA-1 standard)  
+- **Input block size:** 512 bits  
+- **Output hash size:** 160 bits (5 × 32-bit words)  
+- **Achieved frequency:** ~XXX MHz (from Vivado synthesis)  
+- **Utilization:**  
+  - LUTs: XXXX  
+  - FFs: XXXX  
+  - BRAM: 0  
+  - DSP: 0  
+
+---
+
+## 🏗️ Block Diagram  
+
+Here’s a simple block-level diagram of the SHA-1 datapath:  
+
+    ┌──────────────┐
+    │  Message Wt │  <── 512-bit input block
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │ Round Logic │───> Uses K0..K3 and FF0/FF1/FF2
+    └──────┬──────┘
+           │
+┌──────────▼──────────┐
+│   Registers A..E    │───> 160-bit state
+└──────────┬──────────┘
+           │
+     ┌─────▼─────┐
+     │  Hash Out │  <── 160-bit digest
+     └───────────┘
+
+---
+
+## 🔮 Future Work  
+- Extend support for **message padding** and multiple message blocks (full SHA-1 spec).  
+- Apply **pipelining** or **loop unrolling** for performance optimization.  
+- Implement **UART interface** for real-time message input/output on FPGA.  
+- Compare SHA-1 performance with **SHA-2** and **SHA-3** designs.  
+
+---
+
+## 📜 License  
+This project is licensed under the **MIT License** – free to use and modify with attribution.  
+
